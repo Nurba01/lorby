@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+
+  db3:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - "./postgres:/var/lib/postgresql/data"
+
+  app3:
+    build: .
+    volumes:
+      - .:/config
+      - ./static:/app/static
+    ports:
+    - "8003:8003"
+    command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn config.wsgi:application -w 4 -b 0.0.0.0:8003"
+    env_file:
+      - .env
+    depends_on:
+      - db3
