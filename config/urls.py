@@ -26,3 +26,4 @@ urlpatterns = [
     path('lorby/admin/', admin.site.urls),
     path('lorby/authentication/', include("authentication.urls")),
 ]
+
